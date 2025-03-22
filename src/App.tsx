@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import reactLogo from './assets/react.svg';
 
@@ -12,7 +12,6 @@ function App() {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const observer = useRef<IntersectionObserver | null>(null);
 
   const fetchDinos = async (pageNum: number = 0) => {
     setLoading(true);
@@ -25,6 +24,7 @@ function App() {
       }
 
       setDinos(prev => [...prev, ...data]);
+      setPage(pageNum);
     } catch (error) {
       console.error('Error fetching dinos:', error);
     }
@@ -34,30 +34,6 @@ function App() {
   useEffect(() => {
     fetchDinos();
   }, []);
-
-
-  const lastDinoRef = useCallback((node: HTMLLIElement) => {
-    if (loading) return;
-
-    if (observer.current) {
-      observer.current.disconnect();
-    }
-
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPage(prevPage => {
-          const nextPage = prevPage + 1;
-          fetchDinos(nextPage);
-          return nextPage;
-        });
-      }
-    });
-
-    if (node) {
-      observer.current.observe(node);
-    }
-  }, [loading, hasMore, fetchDinos]);
-
 
   return (
     <>
@@ -69,11 +45,22 @@ function App() {
       </div>
       <ol>
         {dinos.map((dino, index) => (
-          <li key={index} ref={index===dinos.length -1 ? lastDinoRef : null}> {dino.name} </li>
+          <li key={index}> {dino.name} </li>
         ))}
       </ol>
-      {loading ? <em>Loading...</em> : null}
-      {!hasMore ? <em>No more dinos</em> : null}
+      {hasMore && (
+        loading ? (
+          <div>
+            <em>Loading...</em>
+          </div>
+        ) : (
+          <button onClick={() => {
+            return fetchDinos(page + 1)
+          }}>
+            Load More
+          </button>
+        )
+      )}
     </>
   )
 }

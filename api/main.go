@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -20,7 +19,6 @@ type Dino struct {
 }
 
 type App struct {
-	// counter  int
 	Data     []Dino
 	BuildDir string
 }
@@ -33,7 +31,7 @@ func NewApp(data []Dino, buildDir string) *App {
 }
 
 func (a *App) GetDinos(w http.ResponseWriter, r *http.Request) {
-	time.Sleep(time.Second * 1)
+	// time.Sleep(time.Second * 1)
 	page := r.URL.Query().Get("page")
 	window := 15
 	pageNum := 0
