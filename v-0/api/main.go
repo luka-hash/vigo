@@ -1,3 +1,5 @@
+// Copyright © 2025- Luka Ivanović
+// This code is licensed under the terms of the MIT licence (see LICENCE n the root directory for details)
 package main
 
 import (
