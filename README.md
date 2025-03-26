@@ -4,4 +4,4 @@ Experimenting with combining vite front and go backends for small web apps.
 
 ## Licence
 
-This code is licensed under the terms of the MIT license (see LICENCE for details).
+This code is licensed under the terms of the MIT licence (see LICENCE for details).
